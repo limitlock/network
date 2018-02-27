@@ -30,24 +30,39 @@ public class RequestHandler extends Thread {
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 			OutputStream os = socket.getOutputStream();
 
+			String request = null;
+
+			while (true) {
+				String line = br.readLine();
+				if (line == null || "".equals(line)) {
+					break;
+				}
+
+				if (request == null) {
+					request = line;
+					break;
+				}
+			}
+
+			consoleLog(request);
 
 			// 예제 응답입니다.
 			// 서버 시작과 테스트를 마친 후, 주석 처리 합니다.
-			os.write( "HTTP/1.1 200 OK\r\n".getBytes( "UTF-8" ) );
-			os.write( "Content-Type:text/html; charset=utf-8\r\n".getBytes( "UTF-8" ) );
-			os.write( "\r\n".getBytes() );
-			os.write( "<h1>이 페이지가 잘 보이면 실습과제 SimpleHttpServer를 시작할 준비가 된 것입니다.</h1>".getBytes( "UTF-8" ) );
+			os.write("HTTP/1.1 200 OK\r\n".getBytes("UTF-8"));
+			os.write("Content-Type:text/html; charset=utf-8\r\n".getBytes("UTF-8"));
+			os.write("\r\n".getBytes());
+			os.write("<h1>이 페이지가 잘 보이면 실습과제 SimpleHttpServer를 시작할 준비가 된것입니다.</h1>".getBytes("UTF-8"));
 
-		} catch ( Exception ex ) {
-			consoleLog( "error:" + ex );
+		} catch (Exception ex) {
+			consoleLog("error:" + ex);
 		} finally {
 			// clean-up
 			try {
-				if ( socket != null && socket.isClosed() == false ) {
+				if (socket != null && socket.isClosed() == false) {
 					socket.close();
 				}
-			} catch ( IOException ex)  {
-				consoleLog( "error:" + ex );
+			} catch (IOException ex) {
+				consoleLog("error:" + ex);
 			}
 		}
 	}
