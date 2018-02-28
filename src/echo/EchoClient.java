@@ -20,6 +20,7 @@ public class EchoClient {
 
 		try {
 			socket.connect(new InetSocketAddress(SERVER_ID, SERVER_PORT));
+			//byte 단위로 읽어온 스트림을 문자단위로 바꾼다.
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "utf-8"), true);
 
@@ -30,12 +31,16 @@ public class EchoClient {
 					break;
 				}
 				pw.println(message);
-				String echoMessage = br.readLine();
-				if (echoMessage == null) {
-					System.out.println("[client] dissconnect");
-					break;
-				}
-				System.out.println("<<" + echoMessage);
+
+				// Buffer 활용
+				// String echoMessage = br.readLine();
+				// if (echoMessage == null) {
+				// System.out.println("[client] dissconnect");
+				// break;
+				// }
+				// System.out.println("<<" + echoMessage);
+
+				System.out.println("<<" + message);
 			}
 
 		} catch (IOException e) {
